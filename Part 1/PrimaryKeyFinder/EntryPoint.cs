@@ -5,140 +5,85 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-namespace Project1
+using System.Diagnostics;
+
+namespace PrimaryKeyFinder
 {
     public class EntryPoint
     {
-        private static int testedCases = 0;
-        private static int successCases = 0;
-
-        public static void Main(string[] args)
+        private const string programCode = "dust";
+        public static void Main()
         {
-            if (args == null || args.Length == 0)
+            DisplayWelcomeScreen();
+            while (true)
             {
-                Console.WriteLine("Please specify the filename as an argument (include the extension) and the number for max primary keys");
-                return;
-            }
-
-            if(args.Length != 2)
-            {
-                Console.WriteLine("Invalid parameters");
-                return;
-            }
-
-            string filename = args[0];
-            string currentDir = Directory.GetCurrentDirectory();
-            string path = currentDir + "\\" + filename;
-            if(!int.TryParse(args[1], out int result))
-            {
-                Console.WriteLine("Invalid N value");
-                return;
-            }
-            StreamReader sr = new StreamReader(path, Encoding.Default);
-            FindPrimaryKey(sr, result);
-        }
-        private static void FindPrimaryKey(StreamReader sr, int maxKeys)
-        {
-            string[] header = ReadColumn(sr);
-            if (header.Length < maxKeys)
-            {
-                Console.WriteLine("N should be less than the size of the array");
-                return;
-            }
-            List<string[]> data = new List<string[]>();
-            string[] row;
-            while ((row = ReadColumn(sr)) != null)
-            {
-                data.Add(row);
-            }
-            BruteForce(header, data, maxKeys);
-        }
-
-        private static void BruteForce(string[] header, List<string[]> items, int maxKeys)
-        {
-            for (int i = 1; i <= maxKeys; i++)
-            {
-                IEnumerable<int[]> combinations = Combinations(i, header.Length);
-                foreach (int[] combination in combinations)
+                try
                 {
-                    CheckUniqueness(header, items, combination);
-                }
-            }
-            Console.WriteLine(("Tested combinations of primary keys:" + testedCases).PadRight(50));
-            Console.WriteLine(("Possible combinations of primary keys:" + successCases).PadRight(50));
-            Console.WriteLine(("Duplicate keys:" + (testedCases - successCases)).PadRight(50));
-        }
-
-        private static IEnumerable<int[]> Combinations(int k, int n)
-        {
-            int[] result = new int[k];
-            Stack<int> stack = new Stack<int>();
-            stack.Push(1);
-
-            while (stack.Count > 0)
-            {
-                int index = stack.Count - 1;
-                int value = stack.Pop();
-
-                while (value <= n)
-                {
-                    result[index++] = value++;
-                    stack.Push(value);
-                    if (index == k)
+                    string[] args = Utils.ReadCommand().Split(' ');
+                    Utils.Assert(args != null && args.Length != 0, "", fatal: true);
+                    if (args[0] == programCode)
                     {
-                        yield return result;
-                        break;
+                        Queue<string> commands = new Queue<string>(args);
+                        commands.Dequeue(); // programCode
+                        IConsoleRunnable consoleService = SelectConsoleRunnableService(commands);
+                        consoleService.Run(commands);
+                    }
+                    else
+                    {
+                        if(args[0] == "clear")
+                        {
+                            Console.Clear();
+                            System.Threading.Thread.Sleep(200);
+                        }
+                        else if(args[0] == "exit")
+                        {
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            throw new Exception("Command not found");
+                        }
                     }
                 }
-            }
-        }
-        private static void CheckUniqueness(string[] header, List<string[]> items, int[] combination)
-        {
-            bool unique = items.GroupBy(x => Join(x, combination)).All(group => group.Count() == 1);
-            string headerSelection = Join(header,combination);
-            testedCases++;
-            if (unique)
-            {
-                Console.WriteLine(Join(header, combination).PadRight(50));
-                successCases++;
-            }
-        }
-        private static string Join(string[] item, int[] combination)
-        {
-            string selectedItems = "";
-            for(int i = 0; i < combination.Length; i++)
-            {
-                selectedItems += item[combination[i] - 1] + "\t";
-            }
-            return selectedItems;
-        }
-
-
-        
-        private static string[] ReadColumn(StreamReader sr)
-        {
-            if (sr.EndOfStream)
-            {
-                return null;
-            }
-            string header = sr.ReadLine();
-            return header.Split(';');
-        }
-        static string RemoveDiacritics(string text)
-        {
-            string normalizedString = text.Normalize(NormalizationForm.FormD);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            foreach (char c in normalizedString)
-            {
-                UnicodeCategory unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                catch (Exception e)
                 {
-                    stringBuilder.Append(c);
+                    Console.WriteLine(e.Message);
                 }
             }
+        }
 
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        private static void DisplayWelcomeScreen()
+        {
+            Console.Write("Welcome to ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("dust");
+            Console.Write("D");
+            Console.ResetColor();
+            Console.Write("atabase ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("U");
+            Console.ResetColor();
+            Console.Write("til");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("S T");
+            Console.ResetColor();
+            Console.Write("ools");
+
+        }
+
+        private static IConsoleRunnable SelectConsoleRunnableService(Queue<string> commands)
+        {
+            IEnumerable<Type> allTypes = Utils.FindAssignableClasses<IConsoleRunnable>();
+            foreach (Type type in allTypes)
+            {
+                IConsoleRunnable consoleRunnable = Activator.CreateInstance(type) as IConsoleRunnable;
+                if(consoleRunnable.GetCode() == commands.Peek())
+                {
+                    commands.Dequeue();
+                    return consoleRunnable;
+                }
+            }
+            throw new Exception("Could not found command");
         }
     }
 
