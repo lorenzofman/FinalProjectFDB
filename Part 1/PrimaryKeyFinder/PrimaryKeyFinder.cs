@@ -17,12 +17,11 @@ namespace PrimaryKeyFinder
 
         void IConsoleRunnable.Run(Queue<string> parameters)
         {
-            StreamReader input = new StreamReader(Database.File, Encoding.Default);
             int maxKeys = int.Parse(parameters.Dequeue());
             bool verbose = false;
             if (parameters.Count > 0)
             {
-                bool.Parse(parameters.Dequeue());
+                verbose = bool.Parse(parameters.Dequeue());
             }
             CheckAllCombinationsUntilMaxKeys(Database.HeaderAndData.Item1, Database.HeaderAndData.Item2, maxKeys, verbose);
         }

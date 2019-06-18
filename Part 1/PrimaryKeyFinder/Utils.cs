@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace PrimaryKeyFinder
 {
     public static class Utils
     {
-
         public static void Assert(bool condition, string message, bool fatal)
         {
             if (condition)
@@ -71,6 +71,21 @@ namespace PrimaryKeyFinder
             }
             string header = sr.ReadLine();
             return Regex.Split(header, ";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+        }
+
+        #endregion
+
+        #region Write File Methods
+
+        public static void WriteHeaderAndData(string header, List<string> data, string newTableName)
+        {
+            StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory() + "\\" + newTableName, append: false, Encoding.Default);
+            Utils.WriteRegisterLine(streamWriter, header);
+            foreach (string entry in data)
+            {
+                Utils.WriteRegisterLine(streamWriter, entry);
+            }
+            streamWriter.Close();
         }
 
         public static void WriteRegisterLine(StreamWriter sw, string information)

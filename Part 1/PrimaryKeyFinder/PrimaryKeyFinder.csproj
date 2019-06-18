@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyFinder.cs" />
+    <Compile Include="DuplicateRemover.cs" />
     <Compile Include="Extract.cs" />
     <Compile Include="PrintTable.cs" />
     <Compile Include="HeaderPrint.cs" />

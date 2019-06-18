@@ -19,21 +19,20 @@ namespace PrimaryKeyFinder
             string newTableName = parameters.Dequeue();
             int[] indexes = new int[parameters.Count];
             int i = 0;
-            while(parameters.Count > 0)
+            while (parameters.Count > 0)
             {
                 indexes[i++] = int.Parse(parameters.Dequeue()) + 1;
             }
-            StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory() + "\\" + newTableName, append: false, Encoding.Default);
 
             string[] header = Database.HeaderAndData.Item1;
             List<string[]> data = Database.HeaderAndData.Item2;
-
-            Utils.WriteRegisterLine(streamWriter, Utils.JoinColumns(header, indexes));
-            foreach (string[] entry in data)
+            string extractedHeader = Utils.JoinColumns(header, indexes);
+            List<string> extractedData = new List<string>();
+            foreach(string[] entry in data)
             {
-                Utils.WriteRegisterLine(streamWriter, Utils.JoinColumns(entry, indexes));
+                extractedData.Add(Utils.JoinColumns(entry, indexes));
             }
-            streamWriter.Close();
+            Utils.WriteHeaderAndData(extractedHeader, extractedData, newTableName);
 
         }
     }
