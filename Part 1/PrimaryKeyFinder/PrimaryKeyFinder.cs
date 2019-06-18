@@ -19,13 +19,12 @@ namespace PrimaryKeyFinder
         {
             StreamReader input = new StreamReader(Database.File, Encoding.Default);
             int maxKeys = int.Parse(parameters.Dequeue());
-            Utils.ReadHeaderAndData(input, out string[] header, out List<string[]> data);
             bool verbose = false;
             if (parameters.Count > 0)
             {
                 bool.Parse(parameters.Dequeue());
             }
-            CheckAllCombinationsUntilMaxKeys(header, data, maxKeys, verbose);
+            CheckAllCombinationsUntilMaxKeys(Database.HeaderAndData.Item1, Database.HeaderAndData.Item2, maxKeys, verbose);
         }
 
         #endregion

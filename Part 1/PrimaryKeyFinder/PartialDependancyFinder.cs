@@ -13,11 +13,6 @@ namespace PrimaryKeyFinder
 
         public void Run(Queue<string> parameters)
         {
-            if(parameters.Count > 0)
-            {
-                throw new Exception(GetCode() + " command requires zero parameters");
-            }
-
             List<IEnumerable<int[]>> allCombinations = new List<IEnumerable<int[]>>();
             for (int i = 1; i < Database.PrimaryKey.Length; i++)
             {
@@ -25,6 +20,14 @@ namespace PrimaryKeyFinder
                 allCombinations.Add(x);
             }
 
+            bool fast = false;
+            if (parameters.Count > 0)
+            {
+                if (parameters.Dequeue() == "--fast")
+                {
+                    fast = true;
+                }
+            }
             foreach(IEnumerable<int[]> groupOfCombinations in allCombinations)
             {
                 foreach (int[] comb in groupOfCombinations)
@@ -37,7 +40,14 @@ namespace PrimaryKeyFinder
                     int[] otherColumns = InvertCombination(Database.HeaderAndData.Item1.Length);
                     foreach (int otherColumn in otherColumns)
                     {
-                        CheckDependency(Database.HeaderAndData, keys, otherColumn);
+                        if (fast)
+                        {
+                            CheckDependencyFast(Database.HeaderAndData, keys, otherColumn);
+                        }
+                        else
+                        {
+                            CheckDependency(Database.HeaderAndData, keys, otherColumn);
+                        }
                     }
                 }
             }
@@ -55,27 +65,9 @@ namespace PrimaryKeyFinder
             return oppositeComb.ToArray();
         }
 
-        /*
-        private void CheckDependency((string[], List<string[]>) headerAndData, int[] comb, int desiredColumn)
+        private void CheckDependencyFast((string[], List<string[]>) headerAndData, int[] comb, int desiredColumn)
         {
-            Console.WriteLine("Checking dependency: " + Utils.JoinColumns(headerAndData.Item1, comb) + " -> " + headerAndData.Item1[desiredColumn]);
-            int[] extraComb = new int[comb.Length + 1];
-            comb.CopyTo(extraComb,0);
-            extraComb[comb.Length] = desiredColumn;
-            IEnumerable<IGrouping<string, string[]>> groupings = headerAndData.Item2
-                .GroupBy(x => Utils.JoinColumns(x, extraComb));
-            IEnumerable<string> selection = groupings.Select(x => x.Key);
-            bool depends = selection.GroupBy(x => x.Split('\t')[0]).All(group => group.Count() == 1);
-            if (depends)
-            {
-                Console.WriteLine(headerAndData.Item1[desiredColumn] + "is dependent from: " + Utils.JoinColumns(headerAndData.Item1, comb));
-            }
-        }
-        */
-        /*
-        private void CheckDependency((string[], List<string[]>) headerAndData, int[] comb, int desiredColumn)
-        {
-            Console.WriteLine("Checking dependency: " + Utils.JoinColumns(headerAndData.Item1, comb) + " -> " + headerAndData.Item1[desiredColumn]);
+            //Console.WriteLine("Checking dependency: " + Utils.JoinColumns(headerAndData.Item1, comb) + " -> " + headerAndData.Item1[desiredColumn]);
             int[] extraComb = new int[comb.Length + 1];
             comb.CopyTo(extraComb, 0);
             extraComb[comb.Length] = desiredColumn + 1;
@@ -90,17 +82,16 @@ namespace PrimaryKeyFinder
             }
             else
             {
-                var abc = ab.First(group => !group.All(o => o == group.First()));
-                Console.WriteLine(abc.First().Key);
+                //var abc = ab.First(group => !group.All(o => o == group.First()));
+                //Console.WriteLine(abc.First().Key);
             }
         }
-        */
 
         private void CheckDependency((string[], List<string[]>) headerAndData, int[] comb, int desiredColumn)
         {
             string[] header = headerAndData.Item1;
             List<string[]> entries = headerAndData.Item2;
-            Console.Write("Checking dependency: " + Utils.JoinColumns(header, comb) + " -> " + header[desiredColumn] + "is: ");
+            //Console.Write("Checking dependency: " + Utils.JoinColumns(header, comb) + " -> " + header[desiredColumn] + "is: ");
             foreach (string[] entry in entries)
             {
                 string key = Utils.JoinColumns(entry, comb);
@@ -113,15 +104,16 @@ namespace PrimaryKeyFinder
                     {
                         if(value != otherValue)
                         {
-                            Console.WriteLine(string.Format("key = {0}, value = {1}; otherKey = {2}, otherValue = {2}", key, value, otherKey, otherValue));
-                            Console.WriteLine("not dependent");
-                            Console.WriteLine("\n\n\n\n\n");
+                            //Console.WriteLine(string.Format("key = {0}, value = {1}; otherKey = {2}, otherValue = {2}", key, value, otherKey, otherValue));
+                            //Console.WriteLine("not dependent");
+                            //Console.WriteLine("\n\n\n\n\n");
                             return;
                         }
                     }
                 }
             }
-            Console.WriteLine("dependent");
+            Console.WriteLine(Utils.JoinColumns(header, comb) + " -> " + header[desiredColumn]);
+
         }
     }
 }

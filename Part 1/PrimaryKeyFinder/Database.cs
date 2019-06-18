@@ -71,8 +71,10 @@ namespace PrimaryKeyFinder
             {
                 if (cachedHeaderAndData == false)
                 {
-                    Utils.ReadHeaderAndData(new StreamReader(File, Encoding.Default), out headerAndData.Item1, out headerAndData.Item2);
+                    StreamReader sr = new StreamReader(File, Encoding.Default);
+                    Utils.ReadHeaderAndData(sr, out headerAndData.Item1, out headerAndData.Item2);
                     cachedHeaderAndData = true;
+                    sr.Close();
                 }
                 return headerAndData;
             }

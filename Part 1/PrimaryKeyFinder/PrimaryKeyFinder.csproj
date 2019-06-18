@@ -37,6 +37,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extract.cs" />
     <Compile Include="PrintTable.cs" />
     <Compile Include="HeaderPrint.cs" />
     <Compile Include="Combinations.cs" />

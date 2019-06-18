@@ -38,7 +38,7 @@ namespace PrimaryKeyFinder
             string selectedItems = "";
             for (int i = 0; i < combination.Length; i++)
             {
-                selectedItems += item[combination[i] - 1] + "\t";
+                selectedItems += item[combination[i] - 1] + ((i + 1 == combination.Length) ? "" : ";");
             }
             return selectedItems;
         }
@@ -53,20 +53,17 @@ namespace PrimaryKeyFinder
 
         public static void ReadHeaderAndData(StreamReader input, out string[] header, out List<string[]> data)
         {
-            header = ReadColumn(input);
-            for (int i = 0; i < header.Length; i++)
-            {
-                header[i] = i + ")" + header[i];
-            }
+            header = ReadRegisterLine(input);
             data = new List<string[]>();
             string[] row;
-            while ((row = ReadColumn(input)) != null)
+            while ((row = ReadRegisterLine(input)) != null)
             {
                 data.Add(row);
             }
+
         }
 
-        public static string[] ReadColumn(StreamReader sr)
+        public static string[] ReadRegisterLine(StreamReader sr)
         {
             if (sr.EndOfStream)
             {
@@ -74,6 +71,11 @@ namespace PrimaryKeyFinder
             }
             string header = sr.ReadLine();
             return Regex.Split(header, ";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+        }
+
+        public static void WriteRegisterLine(StreamWriter sw, string information)
+        {
+            sw.WriteLine(information);
         }
 
         #endregion
