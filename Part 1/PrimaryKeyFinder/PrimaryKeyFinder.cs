@@ -20,34 +20,49 @@ namespace PrimaryKeyFinder
             StreamReader input = new StreamReader(Database.File, Encoding.Default);
             int maxKeys = int.Parse(parameters.Dequeue());
             Utils.ReadHeaderAndData(input, out string[] header, out List<string[]> data);
-            CheckAllCombinationsUntilMaxKeys(header, data, maxKeys);
+            bool verbose = false;
+            if (parameters.Count > 0)
+            {
+                bool.Parse(parameters.Dequeue());
+            }
+            CheckAllCombinationsUntilMaxKeys(header, data, maxKeys, verbose);
         }
 
         #endregion
   
         #region CheckingMethods
 
-        private void CheckAllCombinationsUntilMaxKeys(string[] header, List<string[]> items, int maxKeys)
+        private void CheckAllCombinationsUntilMaxKeys(string[] header, List<string[]> items, int maxKeys, bool verbose)
         {
             for (int i = 1; i <= maxKeys; i++)
             {
                 IEnumerable<int[]> combinations = Combinations.Calculate(i, header.Length);
                 foreach (int[] combination in combinations)
                 {
-                    CheckUniqueness(header, items, combination);
+                    CheckUniqueness(header, items, combination, verbose);
                 }
             }
         }
 
-        private void CheckUniqueness(string[] header, List<string[]> items, int[] combination)
+        private void CheckUniqueness(string[] header, List<string[]> items, int[] combination, bool verbose)
         {
-            bool unique = items
-                .GroupBy(x => Utils.JoinColumns(x, combination))
-                .All(group => group.Count() == 1);
+            string headerSelection = Utils.JoinColumns(header, combination);
+            if(verbose)
+                Console.WriteLine("Checking uniqueness of " + headerSelection);
+            IEnumerable<IGrouping<string, string[]>> groups = items
+                .GroupBy(x => Utils.JoinColumns(x, combination));
+            bool unique = groups.All(group => group.Count() == 1);
             if (unique)
             {
-                string headerSelection = Utils.JoinColumns(header, combination);
                 Console.WriteLine(headerSelection.PadRight(50));
+            }
+            else
+            {
+                if (verbose)
+                {
+                    IGrouping<string, string[]> grouping = groups.First(x => x.Count() > 1);
+                    Console.WriteLine(grouping.Key);
+                }
             }
         }
 

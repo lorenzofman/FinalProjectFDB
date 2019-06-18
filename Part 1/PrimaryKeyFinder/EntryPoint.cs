@@ -52,6 +52,8 @@ namespace PrimaryKeyFinder
             }
         }
 
+
+
         private static void DisplayWelcomeScreen()
         {
             Console.Write("Welcome to ");

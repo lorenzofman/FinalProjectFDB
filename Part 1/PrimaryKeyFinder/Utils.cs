@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PrimaryKeyFinder
 {
     public static class Utils
     {
+
         public static void Assert(bool condition, string message, bool fatal)
         {
             if (condition)
@@ -71,7 +73,7 @@ namespace PrimaryKeyFinder
                 return null;
             }
             string header = sr.ReadLine();
-            return header.Split(';');
+            return Regex.Split(header, ";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
         }
 
         #endregion

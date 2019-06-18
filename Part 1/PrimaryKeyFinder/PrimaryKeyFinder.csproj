@@ -37,12 +37,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrintTable.cs" />
+    <Compile Include="HeaderPrint.cs" />
     <Compile Include="Combinations.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseSetter.cs" />
     <Compile Include="IConsoleRunnable.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="PartialDependancyFounder.cs" />
+    <Compile Include="PartialDependancyFinder.cs" />
     <Compile Include="PrimaryKeyFinder.cs" />
     <Compile Include="SetWorkingFile.cs" />
     <Compile Include="Utils.cs" />
