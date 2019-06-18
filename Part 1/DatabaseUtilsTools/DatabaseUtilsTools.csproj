@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{710E81D3-671D-48EE-8F60-648179CF04C1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>PrimaryKeyFinder</RootNamespace>
-    <AssemblyName>PrimaryKeyFinder</AssemblyName>
+    <RootNamespace>DatabaseUtilsTools</RootNamespace>
+    <AssemblyName>DatabaseUtilsTools</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

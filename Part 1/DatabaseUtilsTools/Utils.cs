@@ -79,7 +79,7 @@ namespace PrimaryKeyFinder
 
         public static void WriteHeaderAndData(string header, List<string> data, string newTableName)
         {
-            StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory() + "\\" + newTableName, append: false, Encoding.Default);
+            StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory() + "\\" + newTableName, false, Encoding.Default);
             Utils.WriteRegisterLine(streamWriter, header);
             foreach (string entry in data)
             {
