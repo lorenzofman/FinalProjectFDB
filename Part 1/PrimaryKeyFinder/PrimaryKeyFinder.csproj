@@ -37,6 +37,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyFinder.cs" />
     <Compile Include="Extract.cs" />
     <Compile Include="PrintTable.cs" />
     <Compile Include="HeaderPrint.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="PartialDependancyFinder.cs" />
     <Compile Include="PrimaryKeyFinder.cs" />
     <Compile Include="SetWorkingFile.cs" />
+    <Compile Include="TransitiveDependencyFinder.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

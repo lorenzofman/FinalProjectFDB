@@ -25,7 +25,7 @@ namespace PrimaryKeyFinder
             {
                 file = value;
                 fileSet = true;
-                primaryKeySet = false;
+                primaryKeysSet = false;
                 cachedHeaderAndData = false;
             }
         }
@@ -34,22 +34,22 @@ namespace PrimaryKeyFinder
 
         #region PrimaryKey
 
-        private static bool primaryKeySet;
-        private static int[] primaryKey;
-        public static int[] PrimaryKey
+        private static bool primaryKeysSet;
+        private static int[] primaryKeys;
+        public static int[] PrimaryKeys
         {
             get
             {
-                if (primaryKeySet == false)
+                if (primaryKeysSet == false)
                 {
                     throw new Exception("Missing primary key");
                 }
-                return primaryKey;
+                return primaryKeys;
             }
             set
             {
-                primaryKey = value;
-                primaryKeySet = true;
+                primaryKeys = value;
+                primaryKeysSet = true;
             }
         }
 
