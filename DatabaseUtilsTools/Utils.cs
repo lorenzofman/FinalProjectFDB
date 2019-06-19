@@ -77,14 +77,19 @@ namespace DatabaseUtilsTools
 
         #region Write File Methods
 
+        public static void WriteHeaderAndData(string header, List<string> data, StreamWriter streamWriter)
+        {
+            WriteRegisterLine(streamWriter, header);
+            foreach (string entry in data)
+            {
+                WriteRegisterLine(streamWriter, entry);
+            }
+        }
+
         public static void WriteHeaderAndData(string header, List<string> data, string newTableName)
         {
             StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory() + "\\" + newTableName, false, Encoding.Default);
-            Utils.WriteRegisterLine(streamWriter, header);
-            foreach (string entry in data)
-            {
-                Utils.WriteRegisterLine(streamWriter, entry);
-            }
+            WriteHeaderAndData(header, data, streamWriter);
             streamWriter.Close();
         }
 
