@@ -1,0 +1,3 @@
+insert into Bidding values ('000022019','23209000091201961','Objeto: Pagamento de anuidade 2019 do Campus Bambuí, junto ao Conselho Regional de Química de Minas Gerais.','Inexigibilidade de Licitaçao','Encerrado','26000','Ministério da Educaçao','26409','Instituto Federal de Educaçao, Ciência e Tecn','158275','INST.FED.MINAS GERAIS/CAMPUS BAMBUI','BAMBUI','1900-1-1',null,'982.00');
+
+select * from Bidding
