@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Diagnostics;
 
-namespace PrimaryKeyFinder
+namespace DatabaseUtilsTools
 {
     public class EntryPoint
     {

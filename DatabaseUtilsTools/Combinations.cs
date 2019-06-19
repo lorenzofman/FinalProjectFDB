@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PrimaryKeyFinder
+namespace DatabaseUtilsTools
 {
     public static class Combinations
     {

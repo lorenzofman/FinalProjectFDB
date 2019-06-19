@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace PrimaryKeyFinder
+namespace DatabaseUtilsTools
 {
     public static class Utils
     {

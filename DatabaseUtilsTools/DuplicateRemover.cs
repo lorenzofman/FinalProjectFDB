@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace PrimaryKeyFinder
+namespace DatabaseUtilsTools
 {
     public class DuplicateRemover : IConsoleRunnable
     {

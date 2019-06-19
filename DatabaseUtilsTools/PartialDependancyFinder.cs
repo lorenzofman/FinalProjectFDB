@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PrimaryKeyFinder
+namespace DatabaseUtilsTools
 {
     public class PartialDependancyFinder : DependencyFinder, IConsoleRunnable
     {
