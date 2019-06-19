@@ -11,8 +11,8 @@ select distinct agencyCode, agencyName, superiorAgencyCode
 from bidding;
 
 -- Select distinct management units while also refering an agency
-insert into ManagementUnit (managementUnitCode, managementUnitName, agencyCode)
-select distinct managementUnitCode, managementUnitName, agencyCode
+insert into ManagementUnit (managementUnitCode, managementUnitName, agencyCode, city)
+select distinct managementUnitCode, managementUnitName, agencyCode, city
 from bidding;
 
 -- Create Bidding (FN3) table (horizontal cut)
