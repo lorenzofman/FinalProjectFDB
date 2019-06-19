@@ -24,7 +24,7 @@ namespace DatabaseUtilsTools
             {
                 sqlInsertions.Add(ExtractInsertionFromEntry(entry));
             }
-            Utils.WriteHeaderAndData("", sqlInsertions, writer);
+            Utils.WriteHeaderAndData(null, sqlInsertions, writer);
             writer.Close();
         }
 
@@ -47,22 +47,33 @@ namespace DatabaseUtilsTools
             string openingDate          = entry[13];
             string value                = entry[14];
 
-            return string.Format(@"insert into Bidding values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}'",
-                int.Parse(biddingId).ToString(),
-                processId,
-                objectName,
-                bidType,
-                bidState,
+            return string.Format(@"insert into Bidding values ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14});",
+                int.Parse(biddingId),
+                ToSqlVarCharField(processId),
+                ToSqlVarCharField(objectName),
+                ToSqlVarCharField(bidType),
+                ToSqlVarCharField(bidState),
                 superiorAgencyCode,
-                superiorAgencyName,
+                ToSqlVarCharField(superiorAgencyName),
                 agencyCode,
-                agencyName,
+                ToSqlVarCharField(agencyName),
                 managementUnitCode,
-                managementUnitName,
-                city,
-                ConvertDateToSQLFormat(publicationDate),
-                ConvertDateToSQLFormat(openingDate),
-                value.Replace(",","."));            
+                ToSqlVarCharField(managementUnitName),
+                ToSqlVarCharField(city),
+                ToSqlVarCharField(ConvertDateToSQLFormat(publicationDate)),
+                ToSqlVarCharField(ConvertDateToSQLFormat(openingDate)),
+                value.Replace(",","."));
+        }
+
+        private string ToSqlVarCharField(string str)
+        {
+            str = str.Replace("'", "`");
+            if (str != "null")
+            {
+                str = str.Insert(0, @"'");
+                str = str.Insert(str.Length, @"'");
+            }
+            return str;
         }
         private void RasterizeData(string[] entry)
         {

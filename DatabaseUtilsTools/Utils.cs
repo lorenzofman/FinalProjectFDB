@@ -79,7 +79,10 @@ namespace DatabaseUtilsTools
 
         public static void WriteHeaderAndData(string header, List<string> data, StreamWriter streamWriter)
         {
-            WriteRegisterLine(streamWriter, header);
+            if (header != null)
+            {
+                WriteRegisterLine(streamWriter, header);
+            }
             foreach (string entry in data)
             {
                 WriteRegisterLine(streamWriter, entry);
