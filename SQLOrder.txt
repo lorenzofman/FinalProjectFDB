@@ -1,0 +1,5 @@
+DenormalizedCreator
+FN3
+[Extracted] Licitacoes.csv
+SQLNormalizer
+* Queries
