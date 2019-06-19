@@ -1,7 +1,3 @@
-drop database if exists Biddings;
-create database if not exists Biddings;
-use Biddings;
-
 create table SuperiorAgency
 (	
     superiorAgencyCode 	int,
