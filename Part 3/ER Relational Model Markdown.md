@@ -6,5 +6,5 @@ Agency (<u>agencyCode</u>, agencyName, superiorAgencyCode)
 ManagementUnit (<u>managementUnitCode</u>, managementUnitName, agencyCode, city)
 	agencyCode references Agency
 
-Bidding (<u>biddingId</u>, processId, objectName, bidType, managementUnitCode, publicationDate, openingDate, value)	
+Bidding (<u>biddingId</u>, processId, objectName, <u>bidType</u>, bidState, <u>managementUnitCode</u>, publicationDate, openingDate, value)	
     managementUnitCode references ManagementUnit
